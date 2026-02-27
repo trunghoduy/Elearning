@@ -21,7 +21,7 @@ public interface UserService {
 	
 	UserDto getProfile();
 	
-	String changePassword(PasswordDto dto);
+	String changePassword(PasswordDto dto, int id);
 
 
 	void saveCourse(UserCourseDto userCourseDto);
