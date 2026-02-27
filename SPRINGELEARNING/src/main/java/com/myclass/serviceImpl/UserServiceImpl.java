@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	@Override
+	@Cacheable(value = "users", key = "#id")
 	public UserDto getById(int id) {
 	User entity =  userRepository.findById(id).get();
 		
@@ -86,7 +89,13 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void update(int id, UserDto dto) {
-		String hasher = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+		String hasher = "";
+		if(dto.getPassword()==null) {
+			hasher =  userRepository.findById(id).get().getPassword();
+		}else {
+			hasher = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+		}
+		
 		if(userRepository.existsById(id)) {
 			User entity = new User(dto.getId(),dto.getEmail(),
 					dto.getFullname(),dto.getPassword(),dto.getAvatar(),
@@ -103,6 +112,7 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	@Override
+	@CacheEvict(value = "users", key = "#id")
 	public void delete(int id) {
 		 userRepository.deleteById(id);
 	}
@@ -115,7 +125,7 @@ public class UserServiceImpl implements UserService {
 		return new UserDto(user.getId(),user.getEmail(),user.getFullname(),user.getRole_id(), user.getAddress(),user.getPhone(),user.getPassword());
 	}
 	@Override
-	public String changePassword(PasswordDto dto) {
+	public String changePassword(PasswordDto dto , int id) {
 		if(dto.getNewPassword().equals(dto.getOldPassword())) {
 			return "Mật khẩu cũ và mới không được trùng nhau!";
 		}

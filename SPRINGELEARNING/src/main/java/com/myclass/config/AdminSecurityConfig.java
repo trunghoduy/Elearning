@@ -48,7 +48,9 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+	    http.cors() // <-- QUAN TRỌNG NHẤT
+        .and()
+        .csrf().disable()
 		.antMatcher("/api/admin/**")
 		.authorizeRequests()
 		.antMatchers("/api/admin/login","/api/admin/user/**","/api/admin/user/edit/**","/api/admin/user/delete/**")

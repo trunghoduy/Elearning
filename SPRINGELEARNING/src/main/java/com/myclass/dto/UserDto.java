@@ -1,12 +1,13 @@
 package com.myclass.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.myclass.entity.Role;
 import com.myclass.entity.User;
 
-public class UserDto {
-
+public class UserDto implements Serializable{
+	 private static final long serialVersionUID = 1L;
 	private int id;
 	private String email;
 	private String fullname;

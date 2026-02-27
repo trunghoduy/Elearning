@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myclass.dto.RoleDto;
 import com.myclass.dto.UserDto;
 
 import com.myclass.service.RoleService;
@@ -53,19 +51,6 @@ public class AdminUserController {
 		return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 	}
 	
-	
-
-	@RequestMapping(value = "add", method = RequestMethod.GET)
-	public Object post () {
-		 try {
-			 List<RoleDto> dtos = roleService.getAll();
-				return new ResponseEntity<Object>(dtos, HttpStatus.OK);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
-		
-	}
 	@PostMapping("")
 	public Object post(@RequestBody  UserDto dto) {	
 		try {
@@ -77,9 +62,7 @@ public class AdminUserController {
 		return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 	}
 	@GetMapping("edit/{id}")
-	public Object get(@PathVariable("id") int id) {
-		List<UserDto> dtos = userService.getAll();
-		ObjectMapper mapper = new ObjectMapper();
+	public Object get(@PathVariable int id) {
 		try {
 			UserDto dto = userService.getById(id);
 			return new ResponseEntity<Object>(dto, HttpStatus.OK);
@@ -90,7 +73,7 @@ public class AdminUserController {
 	}
 	
 	@PutMapping("edit/{id}")
-	public Object put(@PathVariable("id") int id,@RequestBody UserDto dto) {
+	public Object put(@PathVariable int id,@RequestBody UserDto dto) {
 		try {
 			userService.update(id,dto);
 			return new ResponseEntity<Object>(dto, HttpStatus.OK);

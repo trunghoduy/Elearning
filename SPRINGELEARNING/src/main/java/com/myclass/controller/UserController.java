@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,11 +45,11 @@ public class UserController {
 		}	
 		return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 	}
-	
-	@PutMapping("password")
-	public Object put(@RequestBody PasswordDto passwordDto) {
+	@CrossOrigin(origins = "*")
+	@PutMapping("/edit/{id}")
+	public Object put(@RequestBody PasswordDto passwordDto ,@PathVariable int id) {
 		try {
-			String message = userService.changePassword(passwordDto);
+			String message = userService.changePassword(passwordDto, id);
 			if(message !=null)
 			return new ResponseEntity<Object>(message,HttpStatus.OK);
 		} catch (Exception e) {
