@@ -9,7 +9,6 @@ function loadCourse() {
 
     })
         .then(function (res) {
-            console.log(res.data);
             this.rendercourse(res.data);
 
         })
