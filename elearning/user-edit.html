@@ -77,10 +77,6 @@
                                 <input id="email" type="text" name="email" class="form-control" placeholder="email" />
                             </div>
                             <div class="form-group">
-                                <label>Mật khẩu</label>
-                                <input id="password" type="password" name="password" class="form-control" placeholder="password" />
-                            </div>
-                            <div class="form-group">
                                 <label>Họ tên</label>
                                 <input id="fullname" type="text" name="fullname" class="form-control" placeholder="fullname" />
                             </div>
@@ -95,8 +91,15 @@
                                 <input id="address" type="text" name="address" class="form-control" placeholder="address" />
                             </div>
                             <div class="form-group">
-                                <label>Loại người dụng</label>
-                                <input id="role_id" type="text" name="name " class="form-control" placeholder="description" />
+                                 <form >
+                               <label>Loại người dùng</label>
+                                <select id="role_id" name="role_id" class="form-control" placeholder="user" >
+                                    <option value="">select</option>
+                                    <option value="1">admin</option>
+                                    <option value="2">teacher</option>
+                                    <option value="3">student</option>
+                                </select>
+                                </form>
                             </div>
                         </div>
                         <div class="col-12 mt-3">
@@ -131,7 +134,7 @@ window.addEventListener("load", function (event) {
     .then(function(res){
         console.log(res.data);
         document.getElementById('email').value=res.data.email;
-        document.getElementById('password').value=res.data.password;
+       // document.getElementById('password').value=res.data.password;
         document.getElementById('fullname').value=res.data.fullname;
         document.getElementById('phone').value=res.data.phone;
         document.getElementById('address').value=res.data.address;

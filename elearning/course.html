@@ -109,7 +109,8 @@
         <div class="container">
             <div class="banner-content">
                 <h1>My course</h1>
-                <h5>tienhoang1211@gmail.com</h5>
+                <h5 id="email"></h5>
+
             </div>
         </div>
     </section>
@@ -262,7 +263,25 @@
     <script src="./lib/popper.js/popper.min.js"></script>
     <script src="./lib/bootstrap/bootstrap.min.js"></script>
     <script>
-
+window.addEventListener("load", function (event) {
+            
+           
+    axios({
+        url: 'http://localhost:2404/api/admin/user/edit/'+localStorage.getItem("id"),
+        method: 'GET',
+       
+        headers:{'Authorization': 'Bearer '+localStorage.getItem("acesssToken")}
+       
+       
+    })
+    .then(function(res){
+        document.getElementById('email').value=res.data.email;
+    })
+    .catch(function(err){
+        console.log(err)
+    })
+        },
+        );
 var logout = function () {
            localStorage.removeItem("acesssToken");
            refresh();
