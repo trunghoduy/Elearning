@@ -124,7 +124,7 @@
                             <a class="nav-link" data-toggle="tab" href="#picture">Profile picture</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#security">Security</a>
+                            <a class="nav-link" data-toggle="tab" href="#security" >Security</a>
                         </li>
                     </ul>
 
@@ -196,20 +196,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input type="text" class="form-control" readonly
-                                            value="tienhoang1211@gmail.com" />
+                                        <input id="emailSecu" type="text" class="form-control" />
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" class="form-control" />
+                                        <input id ="password" type="password" class="form-control" />
                                     </div>
                                     <div class="form-group">
                                         <label>Confirm password</label>
-                                        <input type="password" class="form-control" />
+                                        <input id ="cfpassword" type="password" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn btn-outline-secondary" id="edit" onclick="editUser(localStorage.getItem('id'))">Save</button>
+                                    <button class="btn btn-outline-secondary" id="edit" onclick="if(validatePassword()) editUser(localStorage.getItem('id'))">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -242,20 +241,15 @@ let name=document.getElementById("fullname").value;
 let diachi=document.getElementById("address").value;
 let phone=document.getElementById("phone").value;
 
+
 let dataedit={"address": diachi,
 "email": email,
 "fullname": name,
 "password": pass,
 "phone": phone,
-
 "id":id
 
-}
-console.log(dataedit);
-console.log("token",localStorage.getItem("acesssToken"));
-
-
-    
+}  
     axios({
         url: 'http://localhost:2404/api/auth/'+id,
         method: 'PUT',
@@ -264,10 +258,7 @@ console.log("token",localStorage.getItem("acesssToken"));
   
     })  
     .then(function(res){
-        console.log(res.data);
         let tookkeenn= localStorage.getItem('acesssToken');
-        console.log("token ne",tookkeenn);
-       console.log("sửa thanh cong");
        document.getElementById('edit').href="profile.html"
           window.location="profile.html"
     })
@@ -276,12 +267,7 @@ console.log("token",localStorage.getItem("acesssToken"));
     })
 
 }
-
-
-
-
-
-            loadprofile();
+        loadprofile();
            
         },
         );
@@ -296,6 +282,7 @@ console.log("token",localStorage.getItem("acesssToken"));
                 location.reload()
             }, 100)
         }
+        
     </script>
     
 </body>

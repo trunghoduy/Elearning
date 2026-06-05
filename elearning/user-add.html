@@ -97,9 +97,17 @@
                                 <input id="diachi" type="text" name="address" class="form-control" placeholder="address" />
                             </div>
                             <div class="form-group">
-                                <label>Loại người dùng</label>
-                                <input id="role_id" type="text" name="role_id" class="form-control" placeholder="user" />
+                                 <form >
+                               <label>Loại người dùng</label>
+                                <select id="role_id" name="role_id" class="form-control" placeholder="user" >
+                                    <option value="">select</option>
+                                    <option value="1">admin</option>
+                                    <option value="2">teacher</option>
+                                    <option value="3">student</option>
+                                </select>
+                                </form>
                             </div>
+                           
                         </div>
                         <div class="col-12 mt-3">
                             <a type="button"   class="btn btn-success" id="save" onclick={addUser()}  >Lưu lại</button>
@@ -132,14 +140,6 @@ var logout = function () {
             }, 100)
         }
 
-    // document.getElementById("save").onclick=function()
-    // {
-        
-
-
-     
-
-    // }
     </script>
 </body>
 
