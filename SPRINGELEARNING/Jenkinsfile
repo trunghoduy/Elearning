@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     environment {
         IMAGE_NAME = "springelearning"
         IMAGE_TAG  = "latest"
