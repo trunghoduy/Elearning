@@ -49,12 +49,34 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo '✅ Deploy thành công! App đang chạy tại port 2404'
-        }
-        failure {
-            echo '❌ Pipeline thất bại, kiểm tra Console Output!'
-        }
-    }
+	post {
+	    success {
+	        echo '✅ Deploy thành công! App đang chạy tại port 2404'
+	        mail to: 'hoduytrung999@gmail.com',
+	             subject: "✅ Jenkins Build SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+	             body: """
+	Build thành công!
+	
+	Job: ${env.JOB_NAME}
+	Build: #${env.BUILD_NUMBER}
+	URL: ${env.BUILD_URL}
+	
+	App đang chạy tại: http://localhost:2404
+	             """
+	    }
+	    failure {
+	        echo '❌ Pipeline thất bại, kiểm tra Console Output!'
+	        mail to: 'hoduytrung999@gmail.com',
+	             subject: "❌ Jenkins Build FAILED - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+	             body: """
+	Build thất bại!
+	
+	Job: ${env.JOB_NAME}
+	Build: #${env.BUILD_NUMBER}
+	URL: ${env.BUILD_URL}
+	
+	Vào link trên để xem Console Output chi tiết.
+	             """
+	    }
+	}
 }
