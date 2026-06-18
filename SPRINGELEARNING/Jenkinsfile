@@ -1,0 +1,60 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.8.6-openjdk-8'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+
+    environment {
+        IMAGE_NAME = "my-springboot-app"
+        IMAGE_TAG  = "latest"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/trunghoduy/Elearning.git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                sh 'mvn clean package -DskipTests=false'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                // Dừng container cũ nếu đang chạy
+                sh 'docker stop ${IMAGE_NAME} || true'
+                sh 'docker rm ${IMAGE_NAME} || true'
+
+                // Chạy container mới
+                sh '''
+                    docker run -d \
+                      --name ${IMAGE_NAME} \
+                      -p 2404:2404 \
+                      ${IMAGE_NAME}:${IMAGE_TAG}
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deploy thành công!'
+        }
+        failure {
+            echo 'Pipeline thất bại, kiểm tra log!'
+        }
+    }
+}
