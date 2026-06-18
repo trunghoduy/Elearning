@@ -1,13 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.6-openjdk-8'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
-        IMAGE_NAME = "my-springboot-app"
+        IMAGE_NAME = "springelearning"
         IMAGE_TAG  = "latest"
     }
 
@@ -22,23 +17,24 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh 'mvn clean package -DskipTests=false'
+                dir('SPRINGELEARNING') {
+                    sh 'mvn clean package -DskipTests=false'
+                }
             }
         }
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+                dir('SPRINGELEARNING') {
+                    sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+                }
             }
         }
 
         stage('Docker Run') {
             steps {
-                // Dừng container cũ nếu đang chạy
                 sh 'docker stop ${IMAGE_NAME} || true'
                 sh 'docker rm ${IMAGE_NAME} || true'
-
-                // Chạy container mới
                 sh '''
                     docker run -d \
                       --name ${IMAGE_NAME} \
@@ -51,10 +47,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deploy thành công!'
+            echo '✅ Deploy thành công! App đang chạy tại port 2404'
         }
         failure {
-            echo 'Pipeline thất bại, kiểm tra log!'
+            echo '❌ Pipeline thất bại, kiểm tra Console Output!'
         }
     }
 }
